@@ -2,7 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<!-- namespace = "com.green.menus.mapper.MenuMapper" : interface 위치 -->
+<!-- 
+Window - preferences - 검색 : xml
+  -> xml(Wild Web Developer) -> 오른쪽 탭에서
+  체크 Download XML Resource .... - Apply 클릭
+namespace = "com.green.menus.mapper.MenuMapper" : interface 위치 
+-->
 <mapper namespace="com.green.menus.mapper.MenuMapper">
 	
 	<select id="getMenuList"
@@ -13,5 +18,11 @@
 	 ORDER BY  MENU_SEQ ASC
 	 	
 	</select>
+	
+	<!-- id는 MenuController.java의 db 에 저장에 있는 insertMenu -->
+	<insert id="insertMenu">
+	  INSERT INTO MENUS ( MENU_ID, MENU_NAME, MENU_SEQ )
+	  VALUES ( #{ menu_id }, #{ menu_name }, #{ menu_seq } )
+	</insert>
   
 </mapper>

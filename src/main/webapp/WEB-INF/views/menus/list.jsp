@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<link rel="shortcut icon" href="/img/favicon-32x32.png"  type="image/x-icon" />
 <link href="/css/common.css" rel="stylesheet" />
 
 <style>
