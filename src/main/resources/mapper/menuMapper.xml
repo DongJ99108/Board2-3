@@ -32,6 +32,12 @@ namespace = "com.green.menus.mapper.MenuMapper" : interface 위치
 	<insert id="insertMenu">
 	  INSERT INTO MENUS ( MENU_ID, MENU_NAME, MENU_SEQ )
 	  VALUES ( #{ menu_id }, #{ menu_name }, #{ menu_seq } )
+	  
+	  
+	  <!-- INSERT INTO MENUS ( MENU_ID, MENU_NAME, MENU_SEQ )
+	  VALUES ( value( SELECT NVL( MAX( ${ menu_name } ), 0 )+1 FROM MENUS ), #{ menu_name }, ( SELECT MAX( MENU_SEQ )+1 FROM MENUS ) ) -->
+	  
+	  
 	</insert>
 	
 	<!-- 메뉴 삭제 -->
@@ -49,6 +55,16 @@ namespace = "com.green.menus.mapper.MenuMapper" : interface 위치
 	   WHERE MENU_ID   = #{ menu_id }
 	  
 	</update>
+	
+	<insert id="insertMenu2">
+	  
+	  INSERT INTO MENUS ( MENU_ID, MENU_NAME, MENU_SEQ ) 
+	  VALUES ( ( SELECT 'MENU' || TRIM( TO_CHAR( NVL( MAX( SUBSTR( MENU_ID, 5, 2 ) ) , 0)+1, '00' ) ) FROM MENUS ),
+            #{menu_name},
+           ( SELECT NVL( MAX( MENU_SEQ ), 0 )+1 FROM MENUS ) 
+           )
+	  
+	</insert>
   
 </mapper>
 
