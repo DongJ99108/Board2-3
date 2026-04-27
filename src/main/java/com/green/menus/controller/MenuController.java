@@ -14,6 +14,11 @@ import com.green.menus.mapper.MenuMapper;
 @Controller
 public class MenuController {
 	
+	// @Autowired : Spring Container 에 미리 new 된 Component 를 찾아서  
+	// menuMapper 변수에 저장해라
+	// @Autowired() - 객체 타입으로 찾아서 연결
+	// @Qualified()  - 객체 이름으로 찾아서 연결
+	// 최근 기법은 생성자를 이용한 방식으로 변화
 	@Autowired
 	private  MenuMapper  menuMapper;
 	
@@ -44,20 +49,61 @@ public class MenuController {
 	public  String  write( MenuDTO menuDTO, Model model ) {
 		
 		// 넘어온 값
-		System.out.println( "menu_id="   +  menuDTO.getMenu_id() );
-		System.out.println( "menu_name=" +  menuDTO.getMenu_name() );
-		System.out.println( "menu_seq="  +  menuDTO.getMenu_seq() );
+		System.out.println("넘어온값(menuDTO):" + menuDTO);
+		// System.out.println( "menu_id="   +  menuDTO.getMenu_id() );
+		// System.out.println( "menu_name=" +  menuDTO.getMenu_name() );
+		// System.out.println( "menu_seq="  +  menuDTO.getMenu_seq() );
 		
 		
 		
 		// DB 에 저장
 		menuMapper.insertMenu( menuDTO );
 		
+		return "redirect:/Menus/List";
+		
+		/*
 		// 다시 조회 -> menuList
 		List<MenuDTO> menuList = menuMapper.getMenuList();
 		model.addAttribute("menuList", menuList);
 		
 		return  "menus/list";
+		*/
+	}
+	
+	// /Menus/Delete
+	@RequestMapping("/Menus/Delete")
+	public String delete( MenuDTO menuDTO ) {
+		System.out.println( "삭제 대상:" + menuDTO );
+		// DB 에서 삭제
+		menuMapper.deleteMenu( menuDTO ); // mybatis mapper 에는 DTO를 전달한다.
+		
+		return "redirect:/Menus/List";
+	}
+	
+	/*
+	// /Menus/Delete
+	@RequestMapping("/Menus/Delete")
+	public String delete( String menu_id ) {
+		System.out.println("삭제할 menu_id=" + menu_id);
+		
+		MenuDTO menuDTO = new MenuDTO(menu_id, null, 0);
+		// DB 에서 삭제
+		menuMapper.deleteMenu( menuDTO ); // mybatis mapper 에는 DTO를 전달한다.
+		
+		return "redirect:/Menus/List";
+	}
+	*/
+	
+	// http://localhost:8080/Menus/UpdateForm?menu_id=MENU07
+	@RequestMapping("/Menus/UpdateForm")
+	public String updateForm(MenuDTO menuDTO, Model model) {
+		System.out.println("넘어온 menuDTO: " + menuDTO);
+		// 수정할 자료를 db에서 검색 : 수정할 정보가 담긴 조회된 menu
+		MenuDTO menu = menuMapper.getMenu(menuDTO);
+		model.addAttribute("menu", menu);
+		
+		
+		return "menus/update";
 	}
 	
 } // class end

@@ -13,8 +13,12 @@ public interface MenuMapper {
 
 
 	void insertMenu(MenuDTO menuDTO);
+
+
+	void deleteMenu(MenuDTO menuDTO);
 	
 }
+
 
 
 
